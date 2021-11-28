@@ -9,6 +9,7 @@ import json
 import jd
 import itertools
 import mimetypes
+import logging
 
 P_APPKEY = "app_key"
 P_API = "method"
@@ -187,7 +188,14 @@ class RestApi(object):
         pass
 
     def getResponse(self, access_token=None, version='2.0', timeout=30, ssl=False):
-        connection = client.HTTPConnection(self.__domain, self.__port, timeout)
+        #client.HTTPSConnection.debuglevel = 1
+        #logging.basicConfig()
+        #logging.getLogger().setLevel(logging.DEBUG)
+        #req_log = logging.getLogger('requests.packages.urllib3')
+        #req_log.setLevel(logging.DEBUG)
+        #req_log.propagate = True
+        #connection = client.HTTPConnection(self.__domain, self.__port, timeout)
+        connection = client.HTTPSConnection(self.__domain) if ssl else client.HTTPConnection(self.__domain, self.__port, timeout)
         sys_parameters = {
             P_APPKEY: self.__app_key,
             P_VERSION: version,
@@ -205,6 +213,7 @@ class RestApi(object):
         sys_parameters[P_SIGN] = sign(self.__secret, sys_parameters)
         connection.connect()
         url = url + "?" + parse.urlencode(sys_parameters)
+        #print(url)
         connection.request(self.__httpmethod, url)
         response = connection.getresponse()
         result = response.read()
