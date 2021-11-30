@@ -49,7 +49,7 @@ class JdClient(object):
 				frappe.log_error(cstr(request.__dict__) + "\n\n" + error_trace,title="Error JdClient execute")
 
 
-def get_access_token(api_doc=None,headers=None,body="", commit_flag=False):
+def get_access_token_jd(api_doc=None,headers=None,body="", commit_flag=False):
 	access_token = ""
 	for t in api_doc.get("api_end_point",{"disabled":0,"type":("in",["Refresh Token","Access Token"])}):
 		if api_doc.marketplace_type == 'JDID' and t.type == "Refresh Token":

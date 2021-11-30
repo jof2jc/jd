@@ -10,7 +10,7 @@ from frappe.model.document import Document
 from frappe.utils import logger, cstr, cint, convert_utc_to_user_timezone, now, flt, time_diff_in_hours, now_datetime, nowdate, getdate, get_weekdays, add_days, add_to_date, today, get_time, get_datetime
 import datetime 
 from frappe.desk.doctype.tag.tag import add_tag
-from jd.controllers.jdapi import JdClient, JdRequest, get_jd_response, get_access_token
+from jd.controllers.jdapi import JdClient, JdRequest, get_jd_response, get_access_token_jd
 from jd.controllers.jdauth import AuthClient, AuthRequest
 
 from custom1.marketplace_flow.marketplace_integration import insert_new_sales_order
@@ -35,7 +35,7 @@ def run_get_marketplace_order_jd():
 				api_doc.api_end_point = api_template.api_end_point
 
 		if jd_doc:
-			access_token = get_access_token(jd_doc, commit_flag=True) or ""
+			access_token = get_access_token_jd(jd_doc, commit_flag=True) or ""
 
 		order_list = []
 		result = {}
